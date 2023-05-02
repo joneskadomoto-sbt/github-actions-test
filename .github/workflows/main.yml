@@ -1,0 +1,38 @@
+name: My First Workflow
+
+on:
+  push:
+    # Define em qual branch será realizado o push
+    # Nesse caso, o push será realizado em todas as branches
+    branches: ["*"]
+
+jobs:
+  build:
+    # Qual máquina o build irá rodar
+    # Podemos rodar em uma máquina Windows, Linux ou MacOS
+    # Linux roda em 1x o seu limite, ex: 10 min em Linux gastam 10 min do seu limite
+    # Windows roda em 2x o seu limite, ex: 10 min em Widows gastam 20 min do seu limite
+    # MacOS roda em 10x o seu limite, ex: 10 min em MacOS gastam 100 min do seu limite
+    runs-on: ubuntu-latest
+    steps:
+      # Entra na pasta do projeto
+      - uses: actions/checkout@v2
+
+      # Faz o setup do Node
+      - uses: actions/setup-node@v1
+        with:
+          # Define a versão do Node
+          node-version: 16
+
+      # Vai usar o Package.json e instalar todas as dependências
+      # O npm install subirá as versões em caso de versões desatualizadas, então utilizamos o npm ci como boas práticas
+      - run: npm ci
+
+      # Vai rodar o comando npm run start
+      - run: npm run start
+
+      # Vai rodar o comando npm run build
+      - run: npm run build
+
+      # Vai rodar o comando npm run deploy
+      - run: npm run deploy
